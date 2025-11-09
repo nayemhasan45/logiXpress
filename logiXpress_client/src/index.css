@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
+@import "tailwindcss";
+@plugin "daisyui";
+
+
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  --color-primary: #caeb66;
+  --color-secondary:  #03373D;
+  --color-base-200: #dff2a3;
+}
+
+.urbanist{
+  font-family: "Urbanist", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@keyframes dashMove {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -16;
+  }
+}
+
+.animate-dash-move {
+  animation: dashMove 0.8s linear infinite;
+}
+
+/* Vertical dashed animation (2× faster) */
+@keyframes dashMoveVertical {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -16;
+  }
+}
+
+.animate-dash-move-vertical {
+  animation: dashMoveVertical 2s linear infinite;
+}
+
+
+@keyframes dashMoveHorizontal {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -16px 0; 
+  }
+}
+
+.animate-dash-move-horizontal {
+  background-image: repeating-linear-gradient(
+    to right,
+    #03464D 0 8px,
+    transparent 8px 16px
+  );
+  background-size: 16px 2px;
+  animation: dashMoveHorizontal 2s linear infinite;
+}
