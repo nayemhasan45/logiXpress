@@ -28,7 +28,7 @@ const AuthLayout = () => {
         </div>
 
         {/* Outlet / Auth Form */}
-        <div className="w-full max-w-md mx-auto md:mx-0">
+        <div className="w-full mx-auto">
           <Outlet />
         </div>
       </div>
