@@ -5,6 +5,7 @@ import OurServices from '../ourServices/OurServices';
 import ClientsMarquee from '../ourClient/ClientsMarquee';
 import WhatWeOffer from '../ourBenefits/WhatWeOffer';
 import MarchentBanner from '../marchentBanner/MarchentBanner';
+import CustomerFeedback from '../customerFeedback/CustomerFeedback';
 
 const Home = () => {
     return (
@@ -15,6 +16,7 @@ const Home = () => {
             <ClientsMarquee></ClientsMarquee>
             <WhatWeOffer></WhatWeOffer>
             <MarchentBanner></MarchentBanner>
+            <CustomerFeedback></CustomerFeedback>
         </div>
     );
 };

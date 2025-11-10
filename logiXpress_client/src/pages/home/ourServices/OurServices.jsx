@@ -43,11 +43,21 @@ const OurServices = () => {
   ];
 
   return (
-  <section className="py-5 md:py-10 mt-5 mb-5 md:mt-10 md:mb-10 text-center rounded-4xl" style={{ backgroundColor: "#03373D" }}>
-      <h2 className="text-3xl md:text-6xl font-bold mb-10 text-white">Our Services</h2>
-      <p className="text-xl  mb-10 text-white">
-        Enjoy fast, reliable parcel delivery with real-time tracking and zero hassle. From personal packages to <br /> business shipments — we deliver on time, every time.
-      </p>
+    <section
+      data-aos="zoom-in"
+      className="py-5 md:py-10 mt-5 mb-5 md:mt-10 md:mb-10 text-center rounded-4xl"
+      style={{ backgroundColor: "#03373D" }}
+    >
+      <h2 className="text-3xl md:text-6xl font-bold mb-5 md:mb-10 text-white">
+        Our Services
+      </h2>
+      <div className="flex items-center justify-center">
+        <p className="text-sm p-5 md:text-xl md:w-[50%]  mb-10 text-white">
+          Enjoy fast, reliable parcel delivery with real-time tracking and zero
+          hassle. From personal packages to business shipments — we deliver on
+          time, every time.
+        </p>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto px-6">
         {services.map((service, index) => (
           <div
@@ -56,7 +66,9 @@ const OurServices = () => {
           >
             <div className="flex flex-col items-center space-y-4">
               {service.icon}
-              <h3 className="text-lg font-semibold text-neutral">{service.title}</h3>
+              <h3 className="text-lg font-semibold text-neutral">
+                {service.title}
+              </h3>
               <p className="text-sm text-gray-600">{service.desc}</p>
             </div>
           </div>

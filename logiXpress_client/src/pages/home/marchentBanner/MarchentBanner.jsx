@@ -4,7 +4,7 @@ import rightImage from "../../../assets/assets/location-merchant.png";
 
 const MarchentBanner = () => {
   return (
-    <section
+    <section data-aos="zoom-in"
       className="relative bg-[#03373D] text-white overflow-hidden rounded-4xl my-5 md:my-10"
       style={{
         backgroundImage: `url(${topBg})`,

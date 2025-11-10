@@ -18,6 +18,11 @@
   font-style: normal;
 }
 
+/* Active pagination dot color */
+.custom-swiper-pagination .swiper-pagination-bullet-active {
+  background-color: #caeb66 !important;
+}
+
 @keyframes dashMove {
   0% {
     stroke-dashoffset: 0;

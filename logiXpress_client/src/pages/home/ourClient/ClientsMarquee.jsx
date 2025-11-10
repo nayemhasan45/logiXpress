@@ -20,7 +20,7 @@ export default function ClientsMarquee() {
   return (
     <section className="py-5 md:py-10 ">
       <h2 className="text-3xl md:text-6xl font-bold text-center mb-2 md:mb-4 text-secondary">Our Clients</h2>
-      <p className="text-xl md:text-3xl  text-center mb-8 md:mb-16">We've helped thousands of sales teams</p>
+      <p className="text-sm md:text-3xl  text-center mb-8 md:mb-16">We've helped thousands of sales teams</p>
       <Marquee
         speed={100}          // Adjust scroll speed
         pauseOnHover={true} // Pause when hovering
