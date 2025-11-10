@@ -25,7 +25,7 @@ function MainApp() {
 
   return (
     <div className="bg-[#EAECED]">
-      <div className="max-w-11/12 mx-auto urbanist">
+      <div className="urbanist">
         <RouterProvider router={router} />
       </div>
     </div>

@@ -20,7 +20,7 @@ const Navber = () => {
     </>
   );
   return (
-    <div className="py-5 md:py-10">
+    <div className="py-5 md:py-10 max-w-11/12 mx-auto ">
       <div className="navbar bg-base-100 shadow-sm rounded-2xl">
         <div className="navbar-start">
           <div className="dropdown">
