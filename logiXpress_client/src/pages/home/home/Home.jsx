@@ -6,6 +6,7 @@ import ClientsMarquee from '../ourClient/ClientsMarquee';
 import WhatWeOffer from '../ourBenefits/WhatWeOffer';
 import MarchentBanner from '../marchentBanner/MarchentBanner';
 import CustomerFeedback from '../customerFeedback/CustomerFeedback';
+import FaqSection from '../faqSection/FaqSection';
 
 const Home = () => {
     return (
@@ -17,6 +18,7 @@ const Home = () => {
             <WhatWeOffer></WhatWeOffer>
             <MarchentBanner></MarchentBanner>
             <CustomerFeedback></CustomerFeedback>
+            <FaqSection></FaqSection>
         </div>
     );
 };

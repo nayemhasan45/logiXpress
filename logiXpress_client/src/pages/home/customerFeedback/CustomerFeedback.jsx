@@ -49,7 +49,7 @@ const feedbackData = [
 
 const CustomerFeedback = () => {
   return (
-    <div className="w-full flex flex-col items-center justify-center py-5 md:py-10 ">
+    <div data-aos="zoom-in" className="w-full flex flex-col items-center justify-center py-5 md:py-10 md:pb-10">
         <div className="flex items-center justify-center">
             <img src={mainLogo} alt="logo" />
         </div>
@@ -90,7 +90,7 @@ const CustomerFeedback = () => {
           prevEl: ".custom-swiper-prev",
         }}
         modules={[EffectCoverflow, Pagination, Navigation, Autoplay]}
-        className="w-full max-w-6xl px-6"
+        className="w-full px-6"
         breakpoints={{
           320: { slidesPerView: 1, spaceBetween: 10 },
           640: { slidesPerView: 2, spaceBetween: 20 },
@@ -100,25 +100,28 @@ const CustomerFeedback = () => {
         {feedbackData.map((item) => (
           <SwiperSlide
             key={item.id}
-            className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 flex flex-col justify-between max-w-sm"
+            className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 w-full min-h-[250px] md:min-h-[300px] lg:min-h-[400px] flex flex-col"
           >
-            {/* Logo inside card top-left */}
+            {/* Logo at top */}
             <img src={logo} alt="Logo" className="w-16 h-auto mb-4" />
 
-            {/* Feedback text */}
-            <p className="text-gray-700 mb-4 text-sm md:text-base">{item.feedback}</p>
+            {/* Centered content */}
+            <div className="flex flex-col justify-center flex-1">
+              {/* Feedback text */}
+              <p className="text-gray-700 mb-4 text-sm md:text-base">{item.feedback}</p>
 
-            {/* Dashed divider - thicker on large screens */}
-            <hr className="border-t-2! md:border-t-4! border-dashed border-gray-300 my-4! w-full!" />
+              {/* Dashed divider - thicker on large screens */}
+              <hr className="border-t-2! md:border-t-4! border-dashed border-gray-300 my-4! w-full!" />
 
-            {/* Customer image + name */}
-            <div className="flex items-center gap-4 md:gap-6">
-              <img
-                src={item.image}
-                alt={item.name}
-                className="w-12! h-12! md:w-16! md:h-16! rounded-full object-cover"
-              />
-              <span className="font-semibold text-gray-800 text-sm md:text-base">{item.name}</span>
+              {/* Customer image + name */}
+              <div className="flex items-center gap-4 md:gap-6">
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className="w-12! h-12! md:w-16! md:h-16! rounded-full object-cover"
+                />
+                <span className="font-semibold text-gray-800 text-sm md:text-base">{item.name}</span>
+              </div>
             </div>
           </SwiperSlide>
         ))}

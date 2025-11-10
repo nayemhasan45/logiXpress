@@ -26,7 +26,7 @@ const WhatWeOffer = () => {
   ];
 
   return (
-    <div className="pt-5 md:pt-10">
+    <div data-aos="zoom-in" className="pt-5 md:pt-10">
       <SectionDivider />
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
         <div className="flex flex-col gap-6 sm:gap-7 md:gap-8 lg:gap-10">
@@ -69,11 +69,11 @@ const WhatWeOffer = () => {
                 </div>
 
                 {/* Horizontal dashed line (Mobile) */}
-                <div className="block sm:hidden w-full h-[2px] animate-dash-move-horizontal"></div>
+                <div className="block sm:hidden w-full h-0.5 animate-dash-move-horizontal"></div>
 
                 {/* Text Content */}
                 <div className="flex-1 text-center sm:text-left">
-                  <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-800 mb-2 sm:mb-2 md:mb-3 lg:mb-4">
+                  <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-secondary mb-2 sm:mb-2 md:mb-3 lg:mb-4">
                     {item.title}
                   </h1>
                   <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-gray-600 leading-relaxed">

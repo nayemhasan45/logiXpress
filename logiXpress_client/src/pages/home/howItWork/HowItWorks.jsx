@@ -26,7 +26,7 @@ const HowItWorks = () => {
   ];
 
   return (
-    <section className=" text-center py-5 md:py-10">
+    <section data-aos="zoom-in"  className=" text-center py-5 md:py-10">
       <h2 className="text-3xl md:text-6xl font-bold mb-10 text-secondary">How It Works</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto px-6">
         {steps.map((step, index) => (
@@ -36,7 +36,7 @@ const HowItWorks = () => {
           >
             <div className="flex flex-col items-center space-y-4">
               {step.icon}
-              <h3 className="text-lg font-semibold">{step.title}</h3>
+              <h3 className="text-lg text-secondary font-semibold md:font-bold">{step.title}</h3>
               <p className="text-sm text-gray-600">{step.desc}</p>
             </div>
           </div>

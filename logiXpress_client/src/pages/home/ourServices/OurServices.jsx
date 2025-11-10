@@ -66,7 +66,7 @@ const OurServices = () => {
           >
             <div className="flex flex-col items-center space-y-4">
               {service.icon}
-              <h3 className="text-lg font-semibold text-neutral">
+              <h3 className="text-lg font-semibold md:font-bold text-secondary">
                 {service.title}
               </h3>
               <p className="text-sm text-gray-600">{service.desc}</p>
