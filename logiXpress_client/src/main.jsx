@@ -5,6 +5,7 @@ import { router } from "./routes/Router.jsx";
 import Aos from "aos";
 import "aos/dist/aos.css";
 import { RouterProvider } from "react-router";
+import AuthProvider from "./context/authContext/AuthProvider.jsx";
 
 // Create a small wrapper component
 function MainApp() {
@@ -26,7 +27,9 @@ function MainApp() {
   return (
     <div className="bg-[#EAECED]">
       <div className="urbanist">
-        <RouterProvider router={router} />
+        <AuthProvider>
+          <RouterProvider router={router} />
+        </AuthProvider>
       </div>
     </div>
   );

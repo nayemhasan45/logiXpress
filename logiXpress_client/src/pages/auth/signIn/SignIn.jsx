@@ -1,14 +1,19 @@
-import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router";
 
 const SignIn = () => {
-  const { register } = useForm();
-
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const onSubmit = (data) => {
+    console.log(data);
+  };
   return (
     <div className="w-full h-full flex items-center justify-center p-4 md:p-8">
       <div className="w-full max-w-md md:w-3/4 lg:w-2/3 p-8 md:p-10 bg-white rounded-2xl shadow-lg">
-        <form className="flex flex-col gap-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
           <fieldset className="flex flex-col gap-4">
             <label className="label text-secondary text-lg md:text-xl font-bold">
               Email
@@ -16,7 +21,7 @@ const SignIn = () => {
             <input
               type="email"
               {...register("email", { required: true })}
-              className="input w-full border border-gray-300 rounded-xl px-6 py-4 md:px-8 md:py-5 focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+              className="input w-full text-base md:text-lg border border-gray-300 rounded-xl px-4 py-3 sm:px-5 sm:py-4 md:px-6 md:py-5 focus:outline-none focus:ring-2 focus:ring-primary transition-all"
               placeholder="Email"
             />
 
@@ -25,11 +30,16 @@ const SignIn = () => {
             </label>
             <input
               type="password"
-              {...register("password", { required: true })}
-              className="input w-full border border-gray-300 rounded-xl px-6 py-4 md:px-8 md:py-5 focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+              {...register("password", { required: true, minLength: 6 })}
+              className="input w-full text-base md:text-lg border border-gray-300 rounded-xl px-4 py-3 sm:px-5 sm:py-4 md:px-6 md:py-5 focus:outline-none focus:ring-2 focus:ring-primary transition-all"
               placeholder="Password"
             />
-
+            {errors.password?.type === "required" && (
+              <p className="text-red-500">password  is required</p>
+            )}
+            {
+                errors.password?.type==='minLength' && <p className="text-red-500">Password must be 6 char</p>
+            }
             <div className="flex justify-start mt-1">
               <a className="link link-hover text-sm md:text-base underline text-primary">
                 Forgot password?
@@ -44,7 +54,7 @@ const SignIn = () => {
           </fieldset>
         </form>
         <p className="mt-5 md:mt-10">
-          Don't have accoutn?  
+          Don't have accoutn?
           <Link className="text-primary font-bold text-xl" to={"/signUp"}>
             Register
           </Link>
