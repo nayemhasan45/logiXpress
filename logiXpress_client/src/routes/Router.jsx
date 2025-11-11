@@ -7,6 +7,7 @@ import SignUp from "../pages/auth/signUp/SignUp";
 import RiderRegistation from "../pages/rider/riderReg/RiderRegistation";
 import PrivateRoute from "./PrivateRoute";
 import ForgetPassword from "../pages/auth/forgetPass/ForgetPassword";
+import Coverage from "../pages/covarage/Coverage";
 
 export const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ export const router = createBrowserRouter([
       {
         index: true,
         Component: Home,
+      },
+      {
+        path:"/coverage",
+        Component:Coverage,
       },
       {
         path: "/be-a-rider",
