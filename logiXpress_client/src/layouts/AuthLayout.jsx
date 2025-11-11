@@ -1,6 +1,7 @@
 import { Link, Outlet } from "react-router";
 import logo from "../assets/logo.png"; 
 import authImage from "../assets/assets/authImage.png"; 
+import ScrollToTop from "../pages/shared/components/ScrollToTop";
 
 const AuthLayout = () => {
   return (
@@ -29,6 +30,7 @@ const AuthLayout = () => {
 
         {/* Outlet / Auth Form */}
         <div className="w-full mx-auto">
+          <ScrollToTop></ScrollToTop>
           <Outlet />
         </div>
       </div>

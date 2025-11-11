@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import SocialLogIn from "../../shared/components/SocialLogIn";
 import useAuth from "../../../hooks/useAuth";
 import Swal from "sweetalert2";
@@ -12,6 +12,9 @@ const SignIn = () => {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/"; 
+
   const onSubmit = (data) => {
     console.log(data);
     signInUser(data.email, data.password)
@@ -23,7 +26,7 @@ const SignIn = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        navigate('/');
+        navigate(from,{replace:true});
       })
       .catch(() => {
         Swal.fire({

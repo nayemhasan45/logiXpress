@@ -29,23 +29,22 @@ const AuthProvider = ({children}) => {
     }
 
     // get current user --------------------------------
-    useEffect(()=>{
-        const unsubscribe = onAuthStateChanged(auth,(initialUser)=>{
-            if(initialUser){
-                setUser(initialUser);
-                setLoading(false);
-            }
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (initialUser) => {
+            // set user whether there's a user or null (signed out)
+            setUser(initialUser);
+            setLoading(false);
         });
-        return ()=>{
+        return () => {
             unsubscribe();
-        }
-    },[])
+        };
+    }, []);
 
     // logout user --------------------------------
-    const signOutUser=()=>{
+    const signOutUser = () => {
         setLoading(true);
         return signOut(auth);
-    }
+    };
     const authInfo={
         user,
         loading,
@@ -55,9 +54,9 @@ const AuthProvider = ({children}) => {
         signOutUser,
     }
     return (
-        <AuthContext value={authInfo}>
+        <AuthContext.Provider value={authInfo}>
             {children}
-        </AuthContext>
+        </AuthContext.Provider>
     );
 };
 

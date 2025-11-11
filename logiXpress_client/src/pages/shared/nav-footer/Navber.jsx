@@ -5,11 +5,40 @@ import useAuth from "../../../hooks/useAuth";
 import { MdArrowOutward } from "react-icons/md";
 import { FiLogOut } from "react-icons/fi";
 import { FaMotorcycle } from "react-icons/fa";
-
+import Swal from "sweetalert2";
 
 const Navber = () => {
-  const { user } = useAuth();
-  const handleSignOut = () => {};
+  const { user, signOutUser } = useAuth();
+  const handleSignOut = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You Have To Sign In Again!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Sign Out!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        signOutUser()
+          .then(() => {
+            Swal.fire({
+              title: "Sign out!",
+              text: "You Have Successfully Loged Out.",
+              icon: "success",
+            });
+          })
+          .catch(() => {
+            Swal.fire({
+              title: "Error!",
+              text: "Unexpected Error Happend , Please Try Again Latter",
+              icon: "error",
+              confirmButtonText: "sorry",
+            });
+          });
+      }
+    });
+  };
   const navLink = (
     <>
       <NavLink className={"pr-5"} to={"/"}>
@@ -115,7 +144,6 @@ const Navber = () => {
               />
             </Link>
           )}
-          
         </div>
       </div>
     </div>
