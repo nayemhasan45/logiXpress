@@ -18,6 +18,12 @@
   font-style: normal;
 }
 
+/* custom color for sweet alert  */
+.cancel-btn-custom {
+  color: #03373D; /* text color */
+  font-weight: bold;
+}
+
 /* Active pagination dot color */
 .custom-swiper-pagination .swiper-pagination-bullet-active {
   background-color: #caeb66 !important;

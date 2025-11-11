@@ -15,9 +15,12 @@ const Navber = () => {
       text: "You Have To Sign In Again!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#CAEB66",
       confirmButtonText: "Yes, Sign Out!",
+      customClass: {
+        cancelButton: "cancel-btn-custom", // 🔹 your custom text color class
+      },
     }).then((result) => {
       if (result.isConfirmed) {
         signOutUser()

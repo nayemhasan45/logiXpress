@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import useAuth from "../../../hooks/useAuth";
 import Swal from "sweetalert2";
 import SocialLogIn from "../../shared/components/SocialLogIn";
@@ -11,9 +11,8 @@ const SignUp = () => {
     formState: { errors },
   } = useForm();
   const { createUser } = useAuth();
+  const navigate = useNavigate();
   const onSubmit = (data) => {
-    console.log(data);
-    console.log(createUser);
     createUser(data.email, data.password)
       .then(() => {
         Swal.fire({
@@ -23,6 +22,7 @@ const SignUp = () => {
           showConfirmButton: false,
           timer: 1500,
         });
+        navigate("/signIn");
       })
       .catch(() => {
         Swal.fire({
@@ -36,6 +36,7 @@ const SignUp = () => {
   return (
     <div className="w-full h-full flex items-center justify-center p-4 md:p-8">
       <div className="w-full max-w-md md:w-3/4 lg:w-2/3 p-8 md:p-10 bg-white rounded-2xl shadow-lg">
+      <h1 className="text-center text-xl md:text-4xl text-secondary font-semibold md:font-bold pb-3 md:pb-10">Please Sign-Up</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
           <fieldset className="flex flex-col gap-4">
             <label className="label text-secondary text-lg md:text-xl font-bold">
@@ -73,7 +74,7 @@ const SignUp = () => {
         </form>
         <p className="mt-5 md:mt-10">
           Allready have an Accoutn?
-          <Link className="text-primary font-bold text-xl" to={"/signIn"}>
+          <Link className="text-secondary hover:text-primary pl-2 font-bold text-xl" to={"/signIn"}>
             Login
           </Link>
         </p>

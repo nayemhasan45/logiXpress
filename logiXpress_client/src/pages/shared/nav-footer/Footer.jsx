@@ -9,7 +9,7 @@ import logo from "../../../assets/footerLogo.png";
 
 const Footer = () => {
   return (
-    <div data-aos="zoom-in" className="pb-5 md:pb-10 max-w-11/12 mx-auto ">
+    <div className="pb-5 md:pb-10 max-w-11/12 mx-auto ">
       <footer className="bg-neutral text-neutral-content py-16 px-6 rounded-4xl">
         <div className="max-w-6xl mx-auto flex flex-col items-center text-center  space-y-5 md:space-y-6">
           {/* Logo */}

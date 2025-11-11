@@ -40,6 +40,7 @@ const SignIn = () => {
   return (
     <div className="w-full h-full flex items-center justify-center p-4 md:p-8">
       <div className="w-full max-w-md md:w-3/4 lg:w-2/3 p-8 md:p-10 bg-white rounded-2xl shadow-lg">
+      <h1 className="text-center text-xl md:text-4xl text-secondary font-semibold md:font-bold pb-3 md:pb-10">Please log-In</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
           <fieldset className="flex flex-col gap-4">
             <label className="label text-secondary text-lg md:text-xl font-bold">
@@ -68,9 +69,9 @@ const SignIn = () => {
               <p className="text-red-500">Password must be 6 char</p>
             )}
             <div className="flex justify-start mt-1">
-              <a className="link link-hover text-sm md:text-base underline text-primary">
-                Forgot password?
-              </a>
+              <Link to={"/forgetPassword"} className="link link-hover text-sm md:text-base underline text-secondary">
+                Forget password?
+              </Link>
             </div>
 
             <input
@@ -82,7 +83,7 @@ const SignIn = () => {
         </form>
         <p className="mt-5 md:mt-10">
           Don't have accoutn?
-          <Link className="text-primary font-bold text-xl" to={"/signUp"}>
+          <Link className="text-secondary hover:text-primary pl-2 font-bold text-xl" to={"/signUp"}>
             Register
           </Link>
         </p>
