@@ -24,7 +24,14 @@ const SignUp = () => {
           timer: 1500,
         });
       })
-      .catch((err) => console.log(err));
+      .catch(() => {
+        Swal.fire({
+          title: "Error!",
+          text: "user can not be created",
+          icon: "error",
+          confirmButtonText: "sorry",
+        });
+      });
   };
   return (
     <div className="w-full h-full flex items-center justify-center p-4 md:p-8">
@@ -64,7 +71,7 @@ const SignUp = () => {
             />
           </fieldset>
         </form>
-         <p className="mt-5 md:mt-10">
+        <p className="mt-5 md:mt-10">
           Allready have an Accoutn?
           <Link className="text-primary font-bold text-xl" to={"/signIn"}>
             Login

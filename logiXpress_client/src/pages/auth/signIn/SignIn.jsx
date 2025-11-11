@@ -1,15 +1,38 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import SocialLogIn from "../../shared/components/SocialLogIn";
+import useAuth from "../../../hooks/useAuth";
+import Swal from "sweetalert2";
 
 const SignIn = () => {
+  const { signInUser } = useAuth(); //custom hook
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const navigate = useNavigate();
   const onSubmit = (data) => {
     console.log(data);
+    signInUser(data.email, data.password)
+      .then(() => {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "User LogedIn Successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        navigate('/');
+      })
+      .catch(() => {
+        Swal.fire({
+          title: "Error!",
+          text: "Check Your Cradinatials",
+          icon: "error",
+          confirmButtonText: "sorry",
+        });
+      });
   };
   return (
     <div className="w-full h-full flex items-center justify-center p-4 md:p-8">
@@ -36,11 +59,11 @@ const SignIn = () => {
               placeholder="Password"
             />
             {errors.password?.type === "required" && (
-              <p className="text-red-500">password  is required</p>
+              <p className="text-red-500">password is required</p>
             )}
-            {
-                errors.password?.type==='minLength' && <p className="text-red-500">Password must be 6 char</p>
-            }
+            {errors.password?.type === "minLength" && (
+              <p className="text-red-500">Password must be 6 char</p>
+            )}
             <div className="flex justify-start mt-1">
               <a className="link link-hover text-sm md:text-base underline text-primary">
                 Forgot password?
