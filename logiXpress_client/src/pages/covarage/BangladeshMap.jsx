@@ -127,16 +127,6 @@ const BangladeshMap = forwardRef((props, ref) => {
                     Areas: {district.covered_area.join(", ")}
                   </p>
                 )}
-                {district.flowchart && (
-                  <a
-                    href={district.flowchart}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 underline text-xs inline-block mt-1"
-                  >
-                    View Flowchart
-                  </a>
-                )}
               </div>
             </Popup>
           </Marker>

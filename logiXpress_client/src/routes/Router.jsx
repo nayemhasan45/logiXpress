@@ -8,6 +8,7 @@ import RiderRegistation from "../pages/rider/riderReg/RiderRegistation";
 import PrivateRoute from "./PrivateRoute";
 import ForgetPassword from "../pages/auth/forgetPass/ForgetPassword";
 import Coverage from "../pages/covarage/Coverage";
+import SendParcel from "../pages/sendParcel/SendParcel";
 
 export const router = createBrowserRouter([
   {
@@ -19,8 +20,8 @@ export const router = createBrowserRouter([
         Component: Home,
       },
       {
-        path:"/coverage",
-        Component:Coverage,
+        path: "/coverage",
+        Component: Coverage,
       },
       {
         path: "/be-a-rider",
@@ -30,8 +31,18 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+      {
+        path: "/sendParcel",
+        element: (
+          <PrivateRoute>
+            <SendParcel></SendParcel>
+          </PrivateRoute>
+        ),
+      },
     ],
   },
+
+  // auth releated routes------------------------------
   {
     path: "/",
     Component: AuthLayout,
@@ -45,9 +56,9 @@ export const router = createBrowserRouter([
         Component: SignUp,
       },
       {
-        path:"/forgetPassword",
-        Component:ForgetPassword,
-      }
+        path: "/forgetPassword",
+        Component: ForgetPassword,
+      },
     ],
   },
 ]);

@@ -21,7 +21,7 @@ const Coverage = () => {
       <div className="flex flex-col md:flex-row items-center gap-3 mb-10 w-full max-w-md">
         <input
           type="text"
-          placeholder="Search your district..."
+          placeholder="Search your district...(only inside Bangladesh)"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#03373D]"

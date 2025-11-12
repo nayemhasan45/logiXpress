@@ -14,7 +14,7 @@ const SocialLogIn = () => {
         Swal.fire({
           position: "top-end",
           icon: "success",
-          title: "User Created Successfully",
+          title: "User Logged In Successfully",
           showConfirmButton: false,
           timer: 1500,
         });
