@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 dotenv.config();
 
@@ -44,7 +44,25 @@ app.get("/", (req, res) => {
   res.send("✅ Server is running successfully!");
 });
 
-// POST route to save parcel
+// GET parcels — all or filtered by userEmail
+app.get("/parcels", async (req, res) => {
+  try {
+    const { email } = req.query; // optional query parameter
+    const filter = email ? { userEmail: email } : {}; 
+
+    const parcels = await parcelCollection
+      .find(filter)
+      .sort({ createdAt: -1 }) // newest first
+      .toArray();
+
+    res.status(200).json(parcels);
+  } catch (err) {
+    console.error("❌ Error fetching parcels:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+//  save parcel to db
 app.post("/parcels", async (req, res) => {
   try {
     const parcelData = req.body;
@@ -66,6 +84,32 @@ app.post("/parcels", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
+// DELETE parcel by ID
+app.delete("/parcels/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Validate ID
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid parcel ID" });
+    }
+
+    // Delete parcel from MongoDB
+    const result = await parcelCollection.deleteOne({ _id: new ObjectId(id) });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: "Parcel not found" });
+    }
+
+    res.status(200).json({ message: "Parcel deleted successfully" });
+  } catch (err) {
+    console.error("❌ Error deleting parcel:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+
 
 // Start server
 const PORT = process.env.PORT || 3000;

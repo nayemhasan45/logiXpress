@@ -6,6 +6,10 @@ import Aos from "aos";
 import "aos/dist/aos.css";
 import { RouterProvider } from "react-router";
 import AuthProvider from "./context/authContext/AuthProvider.jsx";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+
+const queryClient = new QueryClient();
 
 // Create a small wrapper component
 function MainApp() {
@@ -27,9 +31,11 @@ function MainApp() {
   return (
     <div className="bg-[#EAECED]">
       <div className="urbanist">
-        <AuthProvider>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
           <RouterProvider router={router} />
         </AuthProvider>
+        </QueryClientProvider>
       </div>
     </div>
   );
