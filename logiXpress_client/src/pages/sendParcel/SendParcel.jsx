@@ -6,10 +6,12 @@ import { FiSend, FiPackage, FiUser, FiDollarSign } from "react-icons/fi";
 import warehouseData from "../../assets/data/warehouses.json";
 import { v4 as uuidv4 } from 'uuid';
 import useAuth from "../../hooks/useAuth";
+import useAxios from "../../hooks/useAxios";
 
 
 const SendParcel = () => {
-  const { user } =  useAuth();
+  const { user } = useAuth();
+  const apiCall = useAxios();
   const {
     register,
     handleSubmit,
@@ -72,13 +74,13 @@ const SendParcel = () => {
     const breakdown = [];
     const w = parseFloat(weight) || 0;
     const withinCity = senderRegion === receiverRegion;
-    if(type === "document") {
+    if (type === "document") {
       breakdown.push({
         label: "Document Parcel",
         amount: withinCity ? 60 : 80
       });
-    } else if(type === "non-document") {
-      if(w <= 3) {
+    } else if (type === "non-document") {
+      if (w <= 3) {
         breakdown.push({
           label: `Non-Document up to 3kg`,
           amount: withinCity ? 110 : 150
@@ -155,14 +157,21 @@ const SendParcel = () => {
       delivery_cost: cost,
     };
 
-    console.log("Parcel Data to Save:", parcelData);
+    apiCall.post('/parcels', parcelData)
+      .then(res => {
+        if (res.data.parcelId) {
+          toast.success("Parcel submitted successfully!", {
+            position: "top-right",
+            autoClose: 5000,
+          });
+        }
+      })
+      .catch(err=>{
+        console.log(err);
+      })
 
     reset();
 
-    toast.success("Parcel submitted successfully!", {
-      position: "top-right",
-      autoClose: 3000,
-    });
   };
 
   return (
