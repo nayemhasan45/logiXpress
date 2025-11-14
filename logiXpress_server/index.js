@@ -9,29 +9,23 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: "http://localhost:5173" // replace with your frontend URL
+  origin: "http://localhost:5173", // frontend URL
 }));
 app.use(express.json());
 
-// MongoDB URI from .env
-const uri = process.env.MONGO_URI;
-
-// Create a MongoClient
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
+// MongoDB client
+const client = new MongoClient(process.env.MONGO_URI, {
+  serverApi: { version: ServerApiVersion.v1, strict: true, deprecationErrors: true },
 });
 
 let parcelCollection;
 
+// Connect to DB
 async function connectDB() {
   try {
     await client.connect();
-    const db = client.db("logiXpress"); // Database name
-    parcelCollection = db.collection("parcels"); // Collection name
+    const db = client.db("logiXpress");
+    parcelCollection = db.collection("parcels");
     console.log("✅ Connected to MongoDB");
   } catch (err) {
     console.error("❌ MongoDB connection error:", err);
@@ -40,39 +34,60 @@ async function connectDB() {
 connectDB();
 
 // Test route
-app.get("/", (req, res) => {
-  res.send("✅ Server is running successfully!");
-});
+app.get("/", (req, res) => res.send("✅ Server running"));
 
-// GET parcels — all or filtered by userEmail
+// GET all parcels (optional filter by userEmail)
 app.get("/parcels", async (req, res) => {
   try {
-    const { email } = req.query; // optional query parameter
-    const filter = email ? { userEmail: email } : {}; 
-
-    const parcels = await parcelCollection
-      .find(filter)
-      .sort({ createdAt: -1 }) // newest first
+    const { userEmail } = req.query;
+    const filter = userEmail ? { userEmail } : {};
+    const parcels = await parcelCollection.find(filter)
+      .sort({ creation_date: -1 })
       .toArray();
-
     res.status(200).json(parcels);
   } catch (err) {
-    console.error("❌ Error fetching parcels:", err);
+    console.error(err);
     res.status(500).json({ message: "Internal server error" });
   }
 });
 
-//  save parcel to db
+// GET single parcel by ID (for edit)
+app.get("/parcels/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!ObjectId.isValid(id)) return res.status(400).json({ message: "Invalid parcel ID" });
+
+    const parcel = await parcelCollection.findOne({ _id: new ObjectId(id) });
+    if (!parcel) return res.status(404).json({ message: "Parcel not found" });
+
+    res.status(200).json(parcel);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// CREATE new parcel
 app.post("/parcels", async (req, res) => {
   try {
-    const parcelData = req.body;
+    const data = req.body;
 
-    // Basic validation (you can expand this)
-    if (!parcelData.title || !parcelData.senderName || !parcelData.receiverName) {
+    if (!data.title || !data.senderName || !data.receiverName) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
-    // Insert parcel into MongoDB
+    const now = new Date();
+    const parcelData = {
+      ...data,
+      creation_date: now.toISOString(),
+      creation_date_local: now.toLocaleDateString(),
+      creation_time_local: now.toLocaleTimeString(),
+      lastUpdated: now.toISOString(),
+      delivery_fee_status: "Pending",
+      history: [{ status: "Pending", timestamp: now.toISOString() }],
+      delivery_cost: data.delivery_cost || 0,
+    };
+
     const result = await parcelCollection.insertOne(parcelData);
 
     res.status(201).json({
@@ -85,34 +100,51 @@ app.post("/parcels", async (req, res) => {
   }
 });
 
-// DELETE parcel by ID
-app.delete("/parcels/:id", async (req, res) => {
+// PATCH parcel (edit)
+app.patch("/parcels/:id", async (req, res) => {
   try {
     const { id } = req.params;
+    const data = req.body;
 
-    // Validate ID
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).json({ message: "Invalid parcel ID" });
-    }
+    if (!ObjectId.isValid(id)) return res.status(400).json({ message: "Invalid parcel ID" });
 
-    // Delete parcel from MongoDB
-    const result = await parcelCollection.deleteOne({ _id: new ObjectId(id) });
+    // Do not overwrite creation fields
+    delete data.creation_date;
+    delete data.creation_date_local;
+    delete data.creation_time_local;
 
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ message: "Parcel not found" });
-    }
+    data.lastUpdated = new Date().toISOString();
 
-    res.status(200).json({ message: "Parcel deleted successfully" });
+    const result = await parcelCollection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: data }
+    );
+
+    if (result.matchedCount === 0) return res.status(404).json({ message: "Parcel not found" });
+
+    res.status(200).json({ message: "Parcel updated successfully" });
   } catch (err) {
-    console.error("❌ Error deleting parcel:", err);
+    console.error(err);
     res.status(500).json({ message: "Internal server error" });
   }
 });
 
+// DELETE parcel
+app.delete("/parcels/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!ObjectId.isValid(id)) return res.status(400).json({ message: "Invalid parcel ID" });
 
+    const result = await parcelCollection.deleteOne({ _id: new ObjectId(id) });
+    if (result.deletedCount === 0) return res.status(404).json({ message: "Parcel not found" });
+
+    res.status(200).json({ message: "Parcel deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 // Start server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server started on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
