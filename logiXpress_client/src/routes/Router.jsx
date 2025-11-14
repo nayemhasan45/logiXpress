@@ -15,6 +15,9 @@ import MyParcel from "../pages/dashboard/myParcel/MyParcel";
 import PrivateRoute from "./PrivateRoute";
 import CreateParcel from "../pages/dashboard/createParcel/CreateParcel";
 import EditParcel from "../pages/dashboard/editParcel/EditParcel";
+import DashProfile from "../pages/dashboard/profile/DashProfile";
+import DashSettings from "../pages/dashboard/settings/DashSettings";
+import DashHome from "../pages/dashboard/home/DashHome";
 
 export const router = createBrowserRouter([
   // PUBLIC
@@ -24,7 +27,8 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: "coverage", element: <Coverage /> },
-      { path: "be-a-rider", element: (
+      {
+        path: "be-a-rider", element: (
           <PrivateRoute>
             <RiderRegistation />
           </PrivateRoute>
@@ -53,9 +57,27 @@ export const router = createBrowserRouter([
       </PrivateRoute>
     ),
     children: [
-      { path: "myParcels", element: <MyParcel /> },
-      { path: "createParcel", element: <CreateParcel></CreateParcel>},         // new
-      { path: "editParcel/:id", element: <EditParcel></EditParcel> },     // edit
+      {
+        index: true, element: <DashHome></DashHome>
+      },
+      {
+        path: "myParcels", element: <MyParcel />
+      },
+      {
+        path: "createParcel", element: <CreateParcel></CreateParcel>
+
+      },         // new
+      {
+        path: "editParcel/:id", element: <EditParcel></EditParcel>
+
+      },     // edit
+      {
+        path: "profile", element: <DashProfile></DashProfile>
+
+      },
+      {
+        path: "settings", element: <DashSettings></DashSettings>
+      },
     ],
   },
 ]);

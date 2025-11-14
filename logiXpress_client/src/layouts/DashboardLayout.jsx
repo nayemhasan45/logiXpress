@@ -3,6 +3,7 @@ import { NavLink, Outlet } from "react-router";
 import logo from "../assets/logo.png";
 import Footer from "../pages/shared/nav-footer/Footer";
 
+
 const DashboardLayout = () => {
   const handleLinkClick = () => {
     // Only close drawer on small devices
@@ -69,15 +70,9 @@ const DashboardLayout = () => {
                 />
               </NavLink>
             </div>
-
-            <li>
-              <NavLink to={"/dashboard"} onClick={handleLinkClick}>
-                🏠 Dashboard Home
-              </NavLink>
-            </li>
             <li>
               <NavLink to={"/dashboard/myParcels"} onClick={handleLinkClick}>
-                📦 My Parcels
+                 🏠 My Parcels
               </NavLink>
             </li>
             <li>
@@ -99,7 +94,7 @@ const DashboardLayout = () => {
         </div>
       </div>
 
-     
+
     </div>
   );
 };

@@ -88,7 +88,7 @@ const ParcelForm = ({ defaultValues = {}, onSubmit }) => {
           </div>
           <div>
             <label className="block mb-2">Title</label>
-            <input {...register("title", { required: true })} className="w-full border rounded p-2" />
+            <input {...register("title", { required: true })} placeholder="Add Title" className="w-full border rounded p-2" />
             {errors.title && <span className="text-red-500 text-sm">Title required</span>}
           </div>
           {type === "non-document" && (
@@ -150,7 +150,7 @@ const ParcelForm = ({ defaultValues = {}, onSubmit }) => {
       </div>
 
       <div className="w-2/3 mx-auto mt-4">
-        <button type="submit" className="w-full bg-primary text-white py-3 rounded-lg flex items-center justify-center gap-2">
+        <button type="submit" className="w-full bg-primary text-secondary font-bold py-3 rounded-lg flex items-center justify-center gap-2">
           <FiSend /> Submit
         </button>
       </div>

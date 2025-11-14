@@ -69,7 +69,7 @@ const SignIn = () => {
               <p className="text-red-500">Password must be 6 char</p>
             )}
             <div className="flex justify-start mt-1">
-              <Link to={"/forgetPassword"} className="link link-hover text-sm md:text-base underline text-secondary">
+              <Link to={"/auth/forget-password"} className="link link-hover text-sm md:text-base underline text-secondary">
                 Forget password?
               </Link>
             </div>
@@ -83,7 +83,7 @@ const SignIn = () => {
         </form>
         <p className="mt-5 md:mt-10">
           Don't have accoutn?
-          <Link className="text-secondary hover:text-primary pl-2 font-bold text-xl" to={"/signUp"}>
+          <Link className="text-secondary hover:text-primary pl-2 font-bold text-xl" to={"/auth/signUp"}>
             Register
           </Link>
         </p>

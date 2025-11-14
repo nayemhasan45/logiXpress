@@ -34,7 +34,7 @@ const CreateParcel = () => {
   return (
     <div className="max-w-5xl mx-auto py-10">
       <ToastContainer />
-      <h1 className="text-3xl font-bold mb-6">Send New Parcel</h1>
+      <h1 className="text-xl md:text-4xl text-secondary font-bold mb-6">Send New Parcel</h1>
       <ParcelForm onSubmit={handleSubmit} />
     </div>
   );

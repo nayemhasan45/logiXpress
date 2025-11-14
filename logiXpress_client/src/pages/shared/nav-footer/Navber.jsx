@@ -142,7 +142,7 @@ const Navber = () => {
           ) : (
             // Show Sign In if no user
             <Link
-              to="/signIn"
+              to="/auth/signIn"
               className="group flex items-center gap-2 rounded-full bg-[#CAEB66] px-3 py-1.5 text-xs font-semibold text-secondary shadow-md transition-all duration-300 hover:bg-[#b5d85a] hover:shadow-lg active:scale-95 sm:px-5 sm:py-2.5 sm:text-base md:px-6 md:py-3 md:text-lg"
             >
               <span>Sign In</span>

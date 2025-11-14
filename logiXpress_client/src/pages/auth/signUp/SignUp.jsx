@@ -74,7 +74,7 @@ const SignUp = () => {
         </form>
         <p className="mt-5 md:mt-10">
           Allready have an Accoutn?
-          <Link className="text-secondary hover:text-primary pl-2 font-bold text-xl" to={"/signIn"}>
+          <Link className="text-secondary hover:text-primary pl-2 font-bold text-xl" to={"/auth/signIn"}>
             Login
           </Link>
         </p>
