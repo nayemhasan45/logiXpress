@@ -1,77 +1,61 @@
 import { createBrowserRouter } from "react-router";
 import RootLayout from "../layouts/RootLayout";
-import Home from "../pages/home/home/Home";
 import AuthLayout from "../layouts/AuthLayout";
+import DashboardLayout from "../layouts/DashboardLayout";
+
+import Home from "../pages/home/home/Home";
 import SignIn from "../pages/auth/signIn/SignIn";
 import SignUp from "../pages/auth/signUp/SignUp";
-import RiderRegistation from "../pages/rider/riderReg/RiderRegistation";
-import PrivateRoute from "./PrivateRoute";
 import ForgetPassword from "../pages/auth/forgetPass/ForgetPassword";
+import RiderRegistation from "../pages/rider/riderReg/RiderRegistation";
+
 import Coverage from "../pages/covarage/Coverage";
-import SendParcel from "../pages/sendParcel/SendParcel";
-import DashboardLayout from "../layouts/DashboardLayout";
 import MyParcel from "../pages/dashboard/myParcel/MyParcel";
 
+import PrivateRoute from "./PrivateRoute";
+import CreateParcel from "../pages/dashboard/createParcel/CreateParcel";
+import EditParcel from "../pages/dashboard/editParcel/EditParcel";
+
 export const router = createBrowserRouter([
+  // PUBLIC
   {
     path: "/",
-    Component: RootLayout,
+    element: <RootLayout />,
     children: [
-      {
-        index: true,
-        Component: Home,
-      },
-      {
-        path: "/coverage",
-        Component: Coverage,
-      },
-      {
-        path: "/be-a-rider",
-        element: (
+      { index: true, element: <Home /> },
+      { path: "coverage", element: <Coverage /> },
+      { path: "be-a-rider", element: (
           <PrivateRoute>
-            <RiderRegistation></RiderRegistation>
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: "/sendParcel",
-        element: (
-          <PrivateRoute>
-            <SendParcel></SendParcel>
+            <RiderRegistation />
           </PrivateRoute>
         ),
       },
     ],
   },
 
-  // auth related routes------------------------------
+  // AUTH
   {
-    path: "/",
-    Component: AuthLayout,
+    path: "/auth",
+    element: <AuthLayout />,
     children: [
-      {
-        path: "/signIn",
-        Component: SignIn,
-      },
-      {
-        path: "/signUp",
-        Component: SignUp,
-      },
-      {
-        path: "/forgetPassword",
-        Component: ForgetPassword,
-      },
+      { path: "signin", element: <SignIn /> },
+      { path: "signup", element: <SignUp /> },
+      { path: "forget-password", element: <ForgetPassword /> },
     ],
   },
-  // User dashboard related routes----------------------- 
+
+  // DASHBOARD
   {
     path: "/dashboard",
-    element: <PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>,
+    element: (
+      <PrivateRoute>
+        <DashboardLayout />
+      </PrivateRoute>
+    ),
     children: [
-      {
-        path: "myParcels",
-        element: <PrivateRoute><MyParcel></MyParcel></PrivateRoute>
-      },
-    ]
-  }
+      { path: "myParcels", element: <MyParcel /> },
+      { path: "createParcel", element: <CreateParcel></CreateParcel>},         // new
+      { path: "editParcel/:id", element: <EditParcel></EditParcel> },     // edit
+    ],
+  },
 ]);

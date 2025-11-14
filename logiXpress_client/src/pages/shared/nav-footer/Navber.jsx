@@ -57,14 +57,9 @@ const Navber = () => {
         <li>Pricing</li>
       </NavLink>
       {
-        user?<NavLink className={"pr-5"} to={"/sendParcel"}>
-        <li>Add Parcel</li>
-        </NavLink>:""
-      }
-       {
-        user?<NavLink className={"pr-5"} to={"/dashboard"}>
-        <li>Dashboard</li>
-        </NavLink>:""
+        user ? <NavLink className={"pr-5"} to={"/dashboard"}>
+          <li>Dashboard</li>
+        </NavLink> : ""
       }
     </>
   );

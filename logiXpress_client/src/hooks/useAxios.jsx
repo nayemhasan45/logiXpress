@@ -1,12 +1,21 @@
 import axios from 'axios';
-import React from 'react';
+import useAuth from './useAuth';
+import { useMemo } from 'react';
 
-const apiCall = axios.create({
-    baseURL:'http://localhost:3000',
-})
 const useAxios = () => {
-    
-    return apiCall
+  const { user } = useAuth(); // get user info from auth
+
+  const apiCall = useMemo(() => {
+    return axios.create({
+      baseURL: 'http://localhost:3000',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(user?.token ? { Authorization: `Bearer ${user.token}` } : {}),
+      },
+    });
+  }, [user]);
+
+  return apiCall;
 };
 
 export default useAxios;

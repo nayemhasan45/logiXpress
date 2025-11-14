@@ -77,7 +77,12 @@ const DashboardLayout = () => {
             </li>
             <li>
               <NavLink to={"/dashboard/myParcels"} onClick={handleLinkClick}>
-                📦 Parcels
+                📦 My Parcels
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to={"/dashboard/createParcel"} onClick={handleLinkClick}>
+                📦 Send Parcel
               </NavLink>
             </li>
             <li>
