@@ -18,6 +18,7 @@ import EditParcel from "../pages/dashboard/editParcel/EditParcel";
 import DashProfile from "../pages/dashboard/profile/DashProfile";
 import DashSettings from "../pages/dashboard/settings/DashSettings";
 import DashHome from "../pages/dashboard/home/DashHome";
+import StripePay from "../pages/dashboard/payments/stripe/StripePay";
 
 export const router = createBrowserRouter([
   // PUBLIC
@@ -66,11 +67,11 @@ export const router = createBrowserRouter([
       {
         path: "createParcel", element: <CreateParcel></CreateParcel>
 
-      },         // new
+      },      
       {
         path: "editParcel/:id", element: <EditParcel></EditParcel>
 
-      },     // edit
+      }, 
       {
         path: "profile", element: <DashProfile></DashProfile>
 
@@ -78,6 +79,9 @@ export const router = createBrowserRouter([
       {
         path: "settings", element: <DashSettings></DashSettings>
       },
+      {
+        path:"payment/:parcelId", element:<StripePay></StripePay>
+      }
     ],
   },
 ]);

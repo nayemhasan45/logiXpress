@@ -43,7 +43,7 @@ const MyParcel = () => {
   };
 
   const handleEdit = (id) => navigate(`/dashboard/editParcel/${id}`);
-  const handlePayment = (id) => navigate(`/payment/${id}`);
+  const handlePayment = (id) => navigate(`/dashboard/payment/${id}`);
 
 
   if (isLoading) return <Loading />;

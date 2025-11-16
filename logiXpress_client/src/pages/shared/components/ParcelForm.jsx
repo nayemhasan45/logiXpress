@@ -10,7 +10,6 @@ const ParcelForm = ({ defaultValues = {}, onSubmit }) => {
     handleSubmit,
     watch,
     reset,
-    setValue,
     formState: { errors },
   } = useForm({ defaultValues });
 
