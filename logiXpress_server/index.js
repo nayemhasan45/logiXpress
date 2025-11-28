@@ -5,6 +5,9 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 dotenv.config();
 
+const stripe = require("stripe")(process.env.STRIPE_KEY);
+
+
 const app = express();
 
 // Middleware
@@ -144,6 +147,41 @@ app.delete("/parcels/:id", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
+// stripe payment related apis ----------------
+app.post('/create-checkout-session', async (req, res) => {
+  const { parcelId, amount, currency, description } = req.body;
+
+  try {
+    const session = await stripe.checkout.sessions.create({
+      mode: 'payment',
+      payment_method_types: ['card'],
+      line_items: [
+        {
+          price_data: {
+            currency: currency || 'eur',
+            unit_amount: amount, // IN SMALLEST CURRENCY UNIT (e.g. cents)
+            product_data: {
+              name: description || `Parcel #${parcelId}`,
+            },
+          },
+          quantity: 1,
+        },
+      ],
+      metadata: {
+        parcelId,
+      },
+      success_url: `${process.env.CLIENT_URL}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.CLIENT_URL}/payment-cancelled`,
+    });
+
+    return res.json({ id: session.id, url: session.url });
+  } catch (err) {
+    console.error('Stripe checkout session error:', err);
+    return res.status(500).json({ error: 'Unable to create checkout session' });
+  }
+});
+
 
 // Start server
 const PORT = process.env.PORT || 3000;
