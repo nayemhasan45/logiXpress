@@ -2,23 +2,21 @@ import { createBrowserRouter } from "react-router";
 import RootLayout from "../layouts/RootLayout";
 import AuthLayout from "../layouts/AuthLayout";
 import DashboardLayout from "../layouts/DashboardLayout";
-
 import Home from "../pages/home/home/Home";
 import SignIn from "../pages/auth/signIn/SignIn";
 import SignUp from "../pages/auth/signUp/SignUp";
 import ForgetPassword from "../pages/auth/forgetPass/ForgetPassword";
 import RiderRegistation from "../pages/rider/riderReg/RiderRegistation";
-
 import Coverage from "../pages/covarage/Coverage";
 import MyParcel from "../pages/dashboard/myParcel/MyParcel";
-
 import PrivateRoute from "./PrivateRoute";
 import CreateParcel from "../pages/dashboard/createParcel/CreateParcel";
 import EditParcel from "../pages/dashboard/editParcel/EditParcel";
 import DashProfile from "../pages/dashboard/profile/DashProfile";
 import DashSettings from "../pages/dashboard/settings/DashSettings";
 import DashHome from "../pages/dashboard/home/DashHome";
-import StripePay from "../pages/dashboard/payments/stripe/StripePay";
+import PaymentSuccess from "../pages/dashboard/payments/stripe/PaymentSuccess";
+import PaymentCancelled from "../pages/dashboard/payments/stripe/PaymentCancelled";
 
 export const router = createBrowserRouter([
   // PUBLIC
@@ -38,7 +36,7 @@ export const router = createBrowserRouter([
     ],
   },
 
-  // AUTH
+  // AUTH -----------------------------------------------
   {
     path: "/auth",
     element: <AuthLayout />,
@@ -49,7 +47,7 @@ export const router = createBrowserRouter([
     ],
   },
 
-  // DASHBOARD
+  // DASHBOARD -------------------------------------------
   {
     path: "/dashboard",
     element: (
@@ -67,11 +65,11 @@ export const router = createBrowserRouter([
       {
         path: "createParcel", element: <CreateParcel></CreateParcel>
 
-      },      
+      },
       {
         path: "editParcel/:id", element: <EditParcel></EditParcel>
 
-      }, 
+      },
       {
         path: "profile", element: <DashProfile></DashProfile>
 
@@ -79,9 +77,15 @@ export const router = createBrowserRouter([
       {
         path: "settings", element: <DashSettings></DashSettings>
       },
-      {
-        path:"payment/:parcelId", element:<StripePay></StripePay>
-      }
     ],
+  },
+  // stripe path ---------------------------------------------
+  {
+    path: "/payment-success",
+    element: <PaymentSuccess />,
+  },
+  {
+    path: "/payment-cancelled",
+    element: <PaymentCancelled />,
   },
 ]);

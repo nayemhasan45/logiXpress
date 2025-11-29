@@ -182,6 +182,43 @@ app.post('/create-checkout-session', async (req, res) => {
   }
 });
 
+// payment confirm
+app.post("/payments/confirm", async (req, res) => {
+  try {
+    const { session_id } = req.body;
+
+    const session = await stripe.checkout.sessions.retrieve(session_id);
+
+    if (session.payment_status === "paid") {
+      const parcelId = session.metadata.parcelId;
+
+      const updateResult = await parcelCollection.updateOne(
+        { _id: new ObjectId(parcelId) },
+        { 
+          $set: { 
+            delivery_fee_status: "Paid",
+            status: "Paid",
+            lastUpdated: new Date().toISOString()
+          } 
+        }
+      );
+
+      if (updateResult.matchedCount === 0) {
+        console.log("Parcel not found in DB for update");
+        return res.json({ success: false, message: "Parcel not found" });
+      }
+
+      return res.json({ success: true, message: "Parcel marked as paid" });
+    }
+
+    return res.json({ success: false, message: "Payment not completed" });
+  } catch (err) {
+    console.error("Error confirming payment:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
 
 // Start server
 const PORT = process.env.PORT || 3000;

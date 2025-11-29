@@ -6,6 +6,7 @@ import { FaEdit, FaTrash, FaEye, FaCreditCard } from "react-icons/fa";
 import Swal from "sweetalert2";
 import Loading from "../../shared/components/Loading";
 import { useNavigate } from 'react-router';
+// import { stripePromise } from "../payments/stripe/StripePay";
 
 
 const MyParcel = () => {
@@ -43,7 +44,26 @@ const MyParcel = () => {
   };
 
   const handleEdit = (id) => navigate(`/dashboard/editParcel/${id}`);
-  const handlePayment = (id) => navigate(`/dashboard/payment/${id}`);
+
+  // handle the parcel payments --------------------------------
+  const handlePayment = async (parcel) => {
+    try {
+
+
+      const amountInCents = Math.round(parcel.delivery_cost * 100);
+
+      const { data } = await Axios.post("/create-checkout-session", {
+        parcelId: parcel._id,
+        amount: amountInCents,
+        currency: "eur",
+        description: `Delivery cost for parcel ${parcel._id}`
+      });
+      window.location.href = data.url;
+
+    } catch (error) {
+      console.error("Payment error:", error);
+    }
+  };
 
 
   if (isLoading) return <Loading />;
@@ -80,8 +100,15 @@ const MyParcel = () => {
                 </td>
                 <td>{parcel.creation_time_local}</td>
                 <td className="flex gap-2 justify-center">
-                  <button className="btn btn-xs btn-accent" onClick={() => handlePayment(parcel._id)}><FaCreditCard /></button>
-                  
+                  {parcel.delivery_fee_status === "Paid" ? (
+                    <button className="btn btn-xs btn-success" disabled><FaCreditCard /></button>
+                  ) : (
+                    <button className="btn btn-xs btn-accent" onClick={() => handlePayment(parcel)}>
+                      <FaCreditCard />
+                    </button>
+                  )}
+
+
                   <button className="btn btn-xs btn-warning" onClick={() => handleEdit(parcel._id)}><FaEdit /></button>
                   <button className="btn btn-xs btn-error" onClick={() => handleDelete(parcel._id)}><FaTrash /></button>
                 </td>
@@ -106,7 +133,14 @@ const MyParcel = () => {
             <div className="flex justify-between items-center mt-3">
               <p className="text-lg font-semibold">{parcel.delivery_cost} €</p>
               <div className="flex gap-2">
-                <button className="btn btn-xs btn-accent" onClick={() => handlePayment(parcel._id)}><FaCreditCard /></button>
+                {parcel.delivery_fee_status === "Paid" ? (
+                  <button className="btn btn-xs btn-success" disabled><FaCreditCard /></button>
+                ) : (
+                  <button className="btn btn-xs btn-accent" onClick={() => handlePayment(parcel)}>
+                    <FaCreditCard />
+                  </button>
+                )}
+
                 <button className="btn btn-xs btn-warning" onClick={() => handleEdit(parcel._id)}><FaEdit /></button>
                 <button className="btn btn-xs btn-error" onClick={() => handleDelete(parcel._id)}><FaTrash /></button>
               </div>
