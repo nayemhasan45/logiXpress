@@ -17,6 +17,7 @@ import DashSettings from "../pages/dashboard/settings/DashSettings";
 import DashHome from "../pages/dashboard/home/DashHome";
 import PaymentSuccess from "../pages/dashboard/payments/stripe/PaymentSuccess";
 import PaymentCancelled from "../pages/dashboard/payments/stripe/PaymentCancelled";
+import PaymentHistory from "../pages/dashboard/payments/PaymentHistory";
 
 export const router = createBrowserRouter([
   // PUBLIC
@@ -77,6 +78,9 @@ export const router = createBrowserRouter([
       {
         path: "settings", element: <DashSettings></DashSettings>
       },
+      {
+        path:"paymentHistory",element:<PaymentHistory></PaymentHistory>
+      }
     ],
   },
   // stripe path ---------------------------------------------

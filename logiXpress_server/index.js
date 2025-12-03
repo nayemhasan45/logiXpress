@@ -2,9 +2,11 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
+const crypto = require("crypto");
+
 
 dotenv.config();
-
+crypto.randomUUID();
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 
 
@@ -42,17 +44,20 @@ app.get("/", (req, res) => res.send("✅ Server running"));
 // GET all parcels (optional filter by userEmail)
 app.get("/parcels", async (req, res) => {
   try {
-    const { userEmail } = req.query;
-    const filter = userEmail ? { userEmail } : {};
+    const email = req.query.email || req.query.userEmail;
+    const filter = email ? { userEmail: email } : {};
+
     const parcels = await parcelCollection.find(filter)
       .sort({ creation_date: -1 })
       .toArray();
+
     res.status(200).json(parcels);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
 
 // GET single parcel by ID (for edit)
 app.get("/parcels/:id", async (req, res) => {
@@ -70,38 +75,69 @@ app.get("/parcels/:id", async (req, res) => {
   }
 });
 
-// CREATE new parcel
+// CREATE new parcel (with full required structure)
 app.post("/parcels", async (req, res) => {
   try {
     const data = req.body;
 
+    // Validate required fields
     if (!data.title || !data.senderName || !data.receiverName) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
+    // Dates
     const now = new Date();
+
+    // Generate tracking number
+    const trackingNumber = crypto.randomUUID(); 
+
+    // Construct full parcel data
     const parcelData = {
       ...data,
+
+      // User identity (from frontend)
+      userEmail: data.userEmail,
+      userId: data.userId || "guest",
+
+      // System-generated fields
+      trackingNumber,
+
       creation_date: now.toISOString(),
       creation_date_local: now.toLocaleDateString(),
       creation_time_local: now.toLocaleTimeString(),
       lastUpdated: now.toISOString(),
+
+      // Payment fields
       delivery_fee_status: "Pending",
-      history: [{ status: "Pending", timestamp: now.toISOString() }],
+      status: "Pending",
+
+      // Cost fallback
       delivery_cost: data.delivery_cost || 0,
+
+      // History array
+      history: [
+        {
+          status: "Pending",
+          timestamp: now.toISOString(),
+        },
+      ],
     };
 
+    // Insert into DB
     const result = await parcelCollection.insertOne(parcelData);
 
     res.status(201).json({
       message: "Parcel created successfully!",
       parcelId: result.insertedId,
+      trackingNumber: trackingNumber,
     });
+
   } catch (err) {
-    console.error(err);
+    console.error("Create parcel error:", err);
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
 
 // PATCH parcel (edit)
 app.patch("/parcels/:id", async (req, res) => {
@@ -109,44 +145,101 @@ app.patch("/parcels/:id", async (req, res) => {
     const { id } = req.params;
     const data = req.body;
 
-    if (!ObjectId.isValid(id)) return res.status(400).json({ message: "Invalid parcel ID" });
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid parcel ID" });
+    }
 
-    // Do not overwrite creation fields
-    delete data.creation_date;
-    delete data.creation_date_local;
-    delete data.creation_time_local;
+    const now = new Date();
 
-    data.lastUpdated = new Date().toISOString();
+    // PROTECT system fields
+    const protectedFields = [
+      "trackingNumber",
+      "creation_date",
+      "creation_date_local",
+      "creation_time_local",
+      "delivery_fee_status",
+      "status",
+      "history",
+      "userEmail",
+      "userId",
+      "lastUpdated"
+    ];
+
+    // Remove protected fields from incoming payload
+    protectedFields.forEach(field => delete data[field]);
+
+    // Update structure
+    const updateDocument = {
+      $set: {
+        ...data,
+        lastUpdated: now.toISOString(),
+      },
+      $push: {
+        history: {
+          status: "Edited",
+          timestamp: now.toISOString(),
+        },
+      },
+    };
 
     const result = await parcelCollection.updateOne(
       { _id: new ObjectId(id) },
-      { $set: data }
+      updateDocument
     );
 
-    if (result.matchedCount === 0) return res.status(404).json({ message: "Parcel not found" });
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ message: "Parcel not found" });
+    }
 
     res.status(200).json({ message: "Parcel updated successfully" });
+
   } catch (err) {
-    console.error(err);
+    console.error("Update parcel error:", err);
     res.status(500).json({ message: "Internal server error" });
   }
 });
 
+
 // DELETE parcel
+// DELETE parcel (PREVENT deleting paid parcels)
 app.delete("/parcels/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    if (!ObjectId.isValid(id)) return res.status(400).json({ message: "Invalid parcel ID" });
 
+    // Validate ID
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid parcel ID" });
+    }
+
+    // Find parcel
+    const parcel = await parcelCollection.findOne({ _id: new ObjectId(id) });
+
+    if (!parcel) {
+      return res.status(404).json({ message: "Parcel not found" });
+    }
+
+    // BLOCK deletion if already paid
+    if (parcel.delivery_fee_status === "Paid") {
+      return res.status(400).json({ 
+        message: "Cannot delete parcel because payment is already completed." 
+      });
+    }
+
+    // Delete parcel (only if unpaid)
     const result = await parcelCollection.deleteOne({ _id: new ObjectId(id) });
-    if (result.deletedCount === 0) return res.status(404).json({ message: "Parcel not found" });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: "Parcel not found" });
+    }
 
     res.status(200).json({ message: "Parcel deleted successfully" });
+
   } catch (err) {
-    console.error(err);
+    console.error("Delete parcel error:", err);
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
 
 // stripe payment related apis ----------------
 app.post('/create-checkout-session', async (req, res) => {

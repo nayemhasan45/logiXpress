@@ -70,7 +70,7 @@ const MyParcel = () => {
 
   return (
     <div className="p-4 md:p-8">
-      <h2 className="text-2xl font-bold mb-4 text-center">📦 My Parcels</h2>
+      <h2 className="text-2xl md:text-4xl text-secondary  font-bold mb-4 text-center">📦 My Parcels</h2>
       <div className="overflow-x-auto hidden md:block">
         <table className="table table-zebra w-full text-center">
           <thead>

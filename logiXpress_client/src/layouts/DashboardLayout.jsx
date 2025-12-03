@@ -2,6 +2,16 @@ import React from "react";
 import { NavLink, Outlet } from "react-router";
 import logo from "../assets/logo.png";
 import Footer from "../pages/shared/nav-footer/Footer";
+import PaymentHistory from './../pages/dashboard/payments/PaymentHistory';
+import {
+  FaHome,
+  FaPlusSquare,
+  FaUser,
+  FaCog,
+  FaHistory,
+  FaBox
+} from "react-icons/fa";
+
 
 
 const DashboardLayout = () => {
@@ -72,24 +82,36 @@ const DashboardLayout = () => {
             </div>
             <li>
               <NavLink to={"/dashboard/myParcels"} onClick={handleLinkClick}>
-                 🏠 My Parcels
+                <FaBox className="inline-block mr-2" />
+                My Parcels
               </NavLink>
             </li>
+
             <li>
               <NavLink to={"/dashboard/createParcel"} onClick={handleLinkClick}>
-                📦 Send Parcel
+                <FaPlusSquare className="inline-block mr-2" />
+                Send Parcel
               </NavLink>
             </li>
-            <li>
-              <NavLink to={"/dashboard/profile"} onClick={handleLinkClick}>
-                👤 Profile
+             <li>
+              <NavLink to={"/dashboard/paymentHistory"} onClick={handleLinkClick}>
+                <FaHistory className="inline-block mr-2" />
+                Payment History
               </NavLink>
             </li>
             <li>
               <NavLink to={"/dashboard/settings"} onClick={handleLinkClick}>
-                ⚙️ Settings
+                <FaCog className="inline-block mr-2" />
+                Settings
               </NavLink>
             </li>
+            <li>
+              <NavLink to={"/dashboard/profile"} onClick={handleLinkClick}>
+                <FaUser className="inline-block mr-2" />
+                Profile
+              </NavLink>
+            </li>
+           
           </ul>
         </div>
       </div>
